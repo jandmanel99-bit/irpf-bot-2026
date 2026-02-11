@@ -135,10 +135,7 @@ if st.checkbox("✅ Podemos iniciar?"):
     if st.button("Enviar Respostas para o WhatsApp 📲"):
         if nome and cpf:
             # O nome dentro dos colchetes deve ser exatamente o que você salvou no painel
-            telefone_destino = st.secrets["PHONE"]
-
-            # Exemplo de como usar esse telefone para criar o link do WhatsApp
-            link_whatsapp = f"https://wa.me/{telefone_destino}?text=Olá, gostaria de ajuda com meu IRPF!"
+            PHONE = st.secrets["PHONE"]
             
             # --- Preparando os textos auxiliares ---
             txt_conjuge = f"(CPF: {cpf_conjuge})" if casado == "Sim" else ""
