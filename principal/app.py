@@ -172,7 +172,7 @@ if st.checkbox("✅ Podemos iniciar?"):
 ⚠️ *Estou enviando os documentos solicitados em seguida (Declaração anterior, Recibo, Bens, Informes e Dívidas).*"""
             
             # Cria o link
-            link = f"https://wa.me/{meu_zap}?text={urllib.parse.quote(msg)}"
+            link = f"https://wa.me/{PHONE}?text={urllib.parse.quote(msg)}"
             
             st.success(f"✅ Tudo pronto, {primeiro_nome}! Clique abaixo para enviar:")
             st.markdown(f"### [👉 CLIQUE AQUI - ENVIAR PARA JANDERSON]({link})")
