@@ -21,7 +21,8 @@ if st.checkbox("✅ Podemos iniciar?"):
     st.markdown("### 📝 Dados Pessoais")
     nome = st.text_input("Qual o seu nome completo?")
     cpf = st.text_input("Me informa seu CPF?")
-    email = st.text_input("Qual o seu e-mail?") # NOVO CAMPO
+    email = st.text_input("Qual o seu e-mail?")
+    ocupacao = st.text_input("Qual sua Ocupação Profissional / Cargo / Função?")
     
     st.markdown("---")
     st.markdown("#### 🏠 Endereço")
@@ -77,7 +78,6 @@ if st.checkbox("✅ Podemos iniciar?"):
         st.markdown(f"**Preencha os dados do Veículo ({tipo_veiculo}):**")
         
         if tipo_veiculo == "Quitado":
-            # Cria colunas para organizar lado a lado
             c1, c2 = st.columns(2)
             with c1:
                 v_modelo = st.text_input("Marca e Modelo")
@@ -88,13 +88,12 @@ if st.checkbox("✅ Podemos iniciar?"):
                 v_data = st.text_input("Data da Compra")
                 v_vendedor = st.text_input("Comprou de quem? (Nome/CPF, se tiver)")
             
-            # Monta o texto final juntando tudo
             detalhes_veiculo = (f"Veículo: {v_modelo}\n"
                                 f"   Ano: {v_ano} | Placa/Renavam: {v_placa}\n"
                                 f"   Data Compra: {v_data} | Valor: R$ {v_valor}\n"
                                 f"   Vendedor: {v_vendedor}")
             
-        else: # Financiado
+        else:
             c1, c2 = st.columns(2)
             with c1:
                 f_modelo = st.text_input("Descrição (Marca/Modelo)")
@@ -105,7 +104,6 @@ if st.checkbox("✅ Podemos iniciar?"):
                 f_nf = st.text_input("Valor da Nota Fiscal (R$)")
                 f_contrato = st.text_input("Número do Contrato")
             
-            # Monta o texto final juntando tudo
             detalhes_veiculo = (f"Financiado: {f_modelo} ({f_ano})\n"
                                 f"   Contrato: {f_contrato}\n"
                                 f"   Valor NF: R$ {f_nf} | Financiado: R$ {f_total}\n"
@@ -114,19 +112,16 @@ if st.checkbox("✅ Podemos iniciar?"):
     st.markdown("---")
     st.markdown("#### 💰 Bens, Investimentos e Dívidas")
 
-    # --- OUTROS BENS (CORRIGIDO: Sem barra azul, com placeholder) ---
     tem_bens = st.radio("Possui outros bens?", ["Não", "Sim"], horizontal=True)
     lista_bens = ""
     if tem_bens == "Sim":
         lista_bens = st.text_area("Descreva os bens:", placeholder="Ex: Casa, Terreno, Apartamento financiado...")
     
-    # --- INVESTIMENTOS (CORRIGIDO: Sem barra azul) ---
     tem_invest = st.radio("Possui Investimentos?", ["Não", "Sim"], horizontal=True)
     detalhe_invest = ""
     if tem_invest == "Sim":
         detalhe_invest = st.text_area("Descrição dos Investimentos:", placeholder="Ex: Bolsa, Ações, Poupança, CDB, Tesouro Direto...")
 
-    # --- EMPRÉSTIMOS ---
     tem_emprestimo = st.radio("Possui Empréstimos/Dívidas Bancárias?", ["Não", "Sim"], horizontal=True)
     detalhe_emprestimo = ""
     if tem_emprestimo == "Sim":
@@ -152,17 +147,14 @@ if st.checkbox("✅ Podemos iniciar?"):
     st.markdown("---")
     if st.button("Enviar Respostas para o WhatsApp 📲"):
         if nome and cpf:
-            # O nome dentro dos colchetes deve ser exatamente o que você salvou no painel
             try:
                 PHONE = st.secrets["PHONE"]
             except:
-                PHONE = "SEU_NUMERO_AQUI" # Fallback caso não tenha secrets configurado localmente
+                PHONE = "SEU_NUMERO_AQUI"
             
-            # --- Preparando os textos auxiliares ---
             txt_conjuge = f"(CPF: {cpf_conjuge})" if casado == "Sim" else ""
             txt_filhos = f"\n--> {detalhes_filhos}" if filhos == "Sim" else ""
             
-            # Texto do Veículo
             txt_veiculo = ""
             if tem_veiculo == "Sim":
                 txt_veiculo = f"\n--> SITUAÇÃO: {tipo_veiculo}\n--> DETALHES:\n{detalhes_veiculo}"
@@ -170,20 +162,17 @@ if st.checkbox("✅ Podemos iniciar?"):
             txt_bens = f"\n--> {lista_bens}" if tem_bens == "Sim" else ""
             txt_invest = f"\n--> {detalhe_invest}" if tem_invest == "Sim" else ""
             txt_emprestimo = f"\n--> {detalhe_emprestimo}" if tem_emprestimo == "Sim" else ""
-            
-            # Novos textos
             txt_instrucao = f"\n--> {detalhes_instrucao}" if tem_instrucao == "Sim" else ""
             txt_medico = f"\n--> {detalhes_medico}" if tem_medico == "Sim" else ""
 
-            # --- EXTRAI O PRIMEIRO NOME PARA O TÍTULO ---
             primeiro_nome = nome.split()[0].title() if nome else "Cliente"
 
-            # --- MENSAGEM FINAL ---
             msg = f"""*{primeiro_nome} - IRPF 2026*
 
 👤 *Nome:* {nome}
 🆔 *CPF:* {cpf}
 📧 *E-mail:* {email}
+🧑‍💼 *Ocupação:* {ocupacao}
 🏠 *Endereço:* {rua}, {numero} - {bairro}
 💍 *Casado:* {casado} {txt_conjuge}
 👶 *Filhos:* {filhos} {txt_filhos}
@@ -196,7 +185,6 @@ if st.checkbox("✅ Podemos iniciar?"):
 
 ⚠️ *Estou enviando os documentos solicitados em seguida (Declaração anterior, Recibo, Bens, Informes e Dívidas).*"""
             
-            # Cria o link
             link = f"https://wa.me/{PHONE}?text={urllib.parse.quote(msg)}"
             
             st.success(f"✅ Tudo pronto, {primeiro_nome}! Clique abaixo para enviar:")
